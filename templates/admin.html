@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="card">
+      <h1>Admin Panel</h1>
+      <p class="subtitle">Enter password to manage system</p>
+
+      <input type="password" id="adminPassword" placeholder="Admin Password" />
+      <button onclick="loadAdmin()">Login</button>
+
+      <div id="adminContent" style="display: none; margin-top: 20px">
+        <div id="roomStats"></div>
+        <button
+          style="background: #ef4444; margin-top: 15px"
+          onclick="resetSystem()"
+        >
+          Reset System
+        </button>
+      </div>
+
+      <div id="adminMessage"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='admin.js') }}"></script>
+  </body>
+</html>

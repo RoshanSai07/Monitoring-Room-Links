@@ -82,3 +82,11 @@ button:hover {
 #result a:hover {
   text-decoration: underline;
 }
+
+button[style*="#ef4444"] {
+  background: #ef4444;
+}
+
+button[style*="#ef4444"]:hover {
+  background: #dc2626;
+}

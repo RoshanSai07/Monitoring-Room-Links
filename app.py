@@ -4,6 +4,7 @@ import threading
 app = Flask(__name__)
 
 MAX_PER_ROOM = 8
+ADMIN_PASSWORD = "supersecret123"
 
 rooms = {
     "Room 1": {"count": 0, "link": "https://vdo.ninja/?room=room1"},
@@ -53,6 +54,37 @@ def assign_room():
                 return jsonify(assigned_users[user_id])
 
     return jsonify({"error": "All rooms are full"}), 400
+
+@app.route("/admin")
+def admin_page():
+    return render_template("admin.html")
+
+@app.route("/admin/data", methods=["POST"])
+def admin_data():
+    password = request.json.get("password")
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    return jsonify({
+        "rooms": rooms,
+        "total_users": len(assigned_users)
+    })
+
+
+@app.route("/admin/reset", methods=["POST"])
+def admin_reset():
+    password = request.json.get("password")
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    with lock:
+        for room in rooms:
+            rooms[room]["count"] = 0
+        assigned_users.clear()
+
+    return jsonify({"message": "System reset successful"})
 
 
 if __name__ == "__main__":
